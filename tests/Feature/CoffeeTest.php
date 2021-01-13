@@ -2,21 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Actions\DecrementCoffeeAction;
+use App\Models\Coffee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CoffeeTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_coffee_cannot_decrement_below_zero()
     {
-        $response = $this->get('/');
+        $coffee = Coffee::create(['name' => 'coffee', 'qty' => 1]);
 
-        $response->assertStatus(200);
+        // Run the decrement action 3 times.
+        (new DecrementCoffeeAction())->execute($coffee);
+        (new DecrementCoffeeAction())->execute($coffee);
+        (new DecrementCoffeeAction())->execute($coffee);
+
+        $this->assertEquals(0, $coffee->refresh()->qty);
     }
 }

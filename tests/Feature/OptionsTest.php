@@ -2,21 +2,22 @@
 
 namespace Tests\Feature;
 
+use App\Actions\DecrementCoffeeAction;
+use App\Actions\DecrementOptionAction;
+use App\Models\Options;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class OptionsTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_coffee_cannot_decrement_below_zero()
     {
-        $response = $this->get('/');
+        $option = Options::create(['name' => 'Sugar', 'qty' => 1]);
 
-        $response->assertStatus(200);
+        // Run the decrement by.
+        (new DecrementOptionAction())->execute($option->id, 3);
+
+        $this->assertEquals(0, $option->refresh()->qty);
     }
 }
