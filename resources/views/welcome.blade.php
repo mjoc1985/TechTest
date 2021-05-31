@@ -38,7 +38,7 @@
                 <p>Would you like to add anything to your coffee?</p>
             </div>
             <div>
-                @foreach(\App\Models\Options::all() as $option)
+                @foreach($options as $option)
                     @if($option->qty > 0)
                         <div class="my-2">
                             <label>{{ $option->name }}</label>

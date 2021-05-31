@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $coffees = \App\Models\Coffee::where('qty', '>', 0)->get();
+    $options = \App\Models\Options::all();
 
 
-    return view('welcome', compact('coffees'));
+    return view('welcome', compact('coffees', 'options'));
 });
 
 Route::post('coffee/pour', \App\Http\Controllers\ProcessCoffeeController::class)->name('coffee.pour');
